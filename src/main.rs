@@ -40,7 +40,7 @@ fn read_file_in(filename: &str) -> Result<Vec<String>, Error> {
 
 fn compare_length(rest_length: usize, expected_length: usize) {
     if rest_length != expected_length {
-        eprintln!(
+        panic!(
             "Error: Expected {} parts, but got {} parts.",
             expected_length, rest_length
         );
@@ -49,8 +49,7 @@ fn compare_length(rest_length: usize, expected_length: usize) {
 
 fn compare_equal_strings(a: &str, b: &str) {
     if a != b {
-        eprintln!("Error: Expected '{}' but got '{}'.", b, a);
-        std::process::exit(1); // Exit the program if the length does not match
+        panic!("Error: Expected '{}' but got '{}'.", b, a);
     }
 }
 
@@ -59,10 +58,7 @@ fn process_add_or_sub_instruction(rest: &[String], instruction_code: u16) -> u16
 
     let target: u16 = match TARGET_TABLE.get(&rest[0].as_str()) {
         Some(&val) => val,
-        None => {
-            eprintln!("Error: Unknown target '{}'", rest[0]);
-            std::process::exit(1); // Exit if the instruction is unknown
-        }
+        None => panic!("Error: Unknown target '{}'", rest[0]),
     };
 
     // Check that there is a comma in the instruction
@@ -73,10 +69,7 @@ fn process_add_or_sub_instruction(rest: &[String], instruction_code: u16) -> u16
     let access: u16 = match rest[4].as_str() {
         "A" => 0b0,
         "(A)" => 0b1,
-        _ => {
-            eprintln!("Error: Unknown access '{}'", rest[4]);
-            std::process::exit(1); // Exit if the instruction is unknown
-        }
+        _ => panic!("Error: Expected 'A' or '(A)' but got '{}'.", rest[4]),
     };
 
     let binary_instruction: u16 =
@@ -102,20 +95,14 @@ fn process_ldr_instructions(rest: &[String]) -> u16 {
 
     let target: u16 = match TARGET_TABLE.get(&rest[0].as_str()) {
         Some(&val) => val,
-        None => {
-            eprintln!("Error: Unknown target '{}'", rest[0]);
-            std::process::exit(1); // Exit if the instruction is unknown
-        }
+        None => panic!("Error: Unknown target '{}'", rest[0]),
     };
 
     compare_equal_strings(&rest[1], ",");
 
     let src: u16 = match SRC_TABLE.get(&rest[2].as_str()) {
         Some(&val) => val,
-        None => {
-            eprintln!("Error: Unknown source '{}'", rest[2]);
-            std::process::exit(1); // Exit if the instruction is unknown
-        }
+        None => panic!("Error: Unknown source '{}'", rest[2]),
     };
 
     let binary_instruction: u16 = 0b1110000000000000 | (src << 6) | (target << 3);
@@ -130,10 +117,7 @@ fn process_str_instruction(rest: &[String]) -> u16 {
 
     let src: u16 = match SRC_TABLE.get(&rest[2].as_str()) {
         Some(&val) => val,
-        None => {
-            eprintln!("Error: Unknown source '{}'", rest[2]);
-            std::process::exit(1); // Exit if the instruction is unknown
-        }
+        None => panic!("Error: Unknown source '{}'", rest[2]),
     };
 
     let binary_instruction: u16 = 0b1110000000000000 | (src << 6) | 0b001000;
@@ -144,20 +128,14 @@ fn process_str_instruction(rest: &[String]) -> u16 {
 fn process_jump_instruction(instruction: &str, rest: &[String]) -> u16 {
     let jump: u16 = match JUMP_TABLE.get(&instruction) {
         Some(&val) => val,
-        None => {
-            eprintln!("Error: Unknown target '{}'", rest[0]);
-            std::process::exit(1); // Exit if the instruction is unknown
-        }
+        None => panic!("Error: Unknown jump instruction '{}'", instruction),
     };
 
     compare_length(rest.len(), 1);
 
     let source: u16 = match SRC_TABLE.get(&rest[0].as_str()) {
         Some(&val) => val,
-        None => {
-            eprintln!("Error: Unknown source '{}'", rest[0]);
-            std::process::exit(1); // Exit if the instruction is unknown
-        }
+        None => panic!("Error: Unknown source '{}'", rest[0]),
     };
 
     let binary_instruction: u16 = 0b1110000000000000 | (source << 6) | (jump << 0);
