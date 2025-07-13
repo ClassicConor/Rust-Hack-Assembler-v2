@@ -61,7 +61,7 @@ fn process_add_or_sub_instruction(rest: &[String], instruction_code: u16) -> u16
         Some(&val) => val,
         None => {
             eprintln!("Error: Unknown target '{}'", rest[0]);
-            return 0;
+            std::process::exit(1); // Exit if the instruction is unknown
         }
     };
 
@@ -75,7 +75,7 @@ fn process_add_or_sub_instruction(rest: &[String], instruction_code: u16) -> u16
         "(A)" => 0b1,
         _ => {
             eprintln!("Error: Unknown access '{}'", rest[4]);
-            return 0; // Return 0 or handle error appropriately
+            std::process::exit(1); // Exit if the instruction is unknown
         }
     };
 
@@ -104,7 +104,7 @@ fn process_ldr_instructions(rest: &[String]) -> u16 {
         Some(&val) => val,
         None => {
             eprintln!("Error: Unknown target '{}'", rest[0]);
-            return 0; // Return 0 or handle error appropriately
+            std::process::exit(1); // Exit if the instruction is unknown
         }
     };
 
@@ -114,7 +114,7 @@ fn process_ldr_instructions(rest: &[String]) -> u16 {
         Some(&val) => val,
         None => {
             eprintln!("Error: Unknown source '{}'", rest[2]);
-            return 0; // Return 0 or handle error appropriately
+            std::process::exit(1); // Exit if the instruction is unknown
         }
     };
 
@@ -132,7 +132,7 @@ fn process_str_instruction(rest: &[String]) -> u16 {
         Some(&val) => val,
         None => {
             eprintln!("Error: Unknown source '{}'", rest[2]);
-            return 0; // Handle error appropriately
+            std::process::exit(1); // Exit if the instruction is unknown
         }
     };
 
@@ -146,7 +146,7 @@ fn process_jump_instruction(instruction: &str, rest: &[String]) -> u16 {
         Some(&val) => val,
         None => {
             eprintln!("Error: Unknown target '{}'", rest[0]);
-            return 0;
+            std::process::exit(1); // Exit if the instruction is unknown
         }
     };
 
@@ -156,7 +156,7 @@ fn process_jump_instruction(instruction: &str, rest: &[String]) -> u16 {
         Some(&val) => val,
         None => {
             eprintln!("Error: Unknown source '{}'", rest[0]);
-            return 0; // Handle error appropriately
+            std::process::exit(1); // Exit if the instruction is unknown
         }
     };
 
