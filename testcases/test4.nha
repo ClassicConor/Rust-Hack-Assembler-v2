@@ -1,0 +1,30 @@
+				ldr A, $4
+				ldr A, (A)
+				jlt D
+				ldr D, (A)
+				jmp
+				str (A), D
+				ldr A, $5
+				sub D, D, A
+				ldr A, $6
+				add D, D, A
+				ldr A, $7
+				str (A), D
+				ldr A, $8
+				sub D, D, A
+				ldr A, $9
+				add D, D, A
+				ldr A, $10
+				str (A), D
+				ldr A, $11
+				sub D, D, A
+				ldr A, $12
+				add D, D, A
+				ldr A, $13
+				str (A), D
+				ldr A, $14
+				sub D, D, A
+				ldr A, $15
+				add D, D, A
+				ldr A, $16
+				str (A), D

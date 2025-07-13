@@ -1,0 +1,6 @@
+				ldr A, $2
+				ldr D, A
+				ldr A, $3
+				add D, D, A
+				ldr A, $0
+				str (A), D

@@ -1,0 +1,7 @@
+				jgt D
+				jeq A
+				jge (A)
+				jlt D
+				jle (A)
+				jne D
+				jmp
